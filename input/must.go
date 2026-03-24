@@ -32,3 +32,21 @@ func MustFloat(scanner *bufio.Scanner, prompt string) float64 {
 		return Float(scanner, prompt)
 	})
 }
+
+func MustChoice(scanner *bufio.Scanner, prompt string, valid []string) string {
+	return retry(func() (string, error) {
+		return Choice(scanner, prompt, valid)
+	})
+}
+
+func MustMatch(scanner *bufio.Scanner, prompt string, pattern string) string {
+	return retry(func() (string, error) {
+		return Match(scanner, prompt, pattern)
+	})
+}
+
+func MustIntRange(scanner *bufio.Scanner, prompt string, min int, max int) int {
+	return retry(func() (int, error) {
+		return IntRange(scanner, prompt, min, max)
+	})
+}
