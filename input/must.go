@@ -2,6 +2,7 @@ package input
 
 import (
 	"bufio"
+	"fmt"
 )
 
 func retry[T any](fn func() (T, error)) T {
@@ -10,6 +11,7 @@ func retry[T any](fn func() (T, error)) T {
 		if err == nil {
 			return v
 		}
+		fmt.Println("error inputting")
 	}
 }
 
