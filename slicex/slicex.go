@@ -1,6 +1,8 @@
 package slicex
 
-import "golang.org/x/exp/constraints"
+import (
+	"golang.org/x/exp/constraints"
+)
 
 type Number interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 |
