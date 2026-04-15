@@ -21,3 +21,17 @@ func Readlines(path string) (lines []string, err error) {
 	}
 	return
 }
+
+func WriteLines(lines []string, path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+		_, _ = writer.WriteString(line + "\n")
+	}
+	return writer.Flush()
+}
