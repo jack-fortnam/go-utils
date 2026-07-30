@@ -134,7 +134,6 @@ func TestUrl(t *testing.T) {
 		{"localhost", "http://localhost:8080", true},
 		{"complex", "https://sub.domain.example.co.uk/path/to/resource?query=1", true},
 		{"different protocol", "ftp://fileserver.local", true},
-
 		//Invalid
 		{"missing scheme", "google.com", false},
 		{"missing host", "https://", false},
@@ -144,9 +143,43 @@ func TestUrl(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := Card(tt.input)
-			if result != tt.expected {
-				t.Errorf("URL(%s) = %v; want %v", tt.input, result, tt.expected)
+			err := Url(tt.input)
+			got := err == nil
+
+			if got != tt.expected {
+				t.Errorf("URL(%q) = %v, want %v", tt.input, got, tt.expected)
+			}
+		})
+	}
+}
+
+func TestCar(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected bool
+	}{
+		// Valid cases
+		{"Standard Valid", "VK18 XYD", true},
+		{"Another Valid", "BD51 SMR", true},
+
+		// Invalid cases
+		{"No Gap", "VK18XYD", false},
+		{"Lowercase", "vk18 xyd", false},
+		{"Too Long", "VK18 XYDD", false},
+		{"Too Short", "V18 XYD", false},
+		{"Numbers in Suffix", "VK18 X1D", false},
+		{"Random String", "56ghyop", false},
+		{"Empty", "", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := Car(tt.input)
+			got := err == nil
+
+			if got != tt.expected {
+				t.Errorf("Car(%q) = %v, want %v", tt.input, got, tt.expected)
 			}
 		})
 	}

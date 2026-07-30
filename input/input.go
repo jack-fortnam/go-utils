@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// Returns an input as a string
 func String(scanner *bufio.Scanner, prompt string) (string, error) {
 	fmt.Print(prompt)
 	if !scanner.Scan() {
@@ -17,6 +18,7 @@ func String(scanner *bufio.Scanner, prompt string) (string, error) {
 	return scanner.Text(), nil
 }
 
+// Returns an input as a int
 func Int(scanner *bufio.Scanner, prompt string) (int, error) {
 	text, err := String(scanner, prompt)
 	if err != nil {
@@ -26,6 +28,7 @@ func Int(scanner *bufio.Scanner, prompt string) (int, error) {
 	return strconv.Atoi(text)
 }
 
+// Returns an input as a float64
 func Float(scanner *bufio.Scanner, prompt string) (float64, error) {
 	text, err := String(scanner, prompt)
 	if err != nil {
@@ -34,6 +37,7 @@ func Float(scanner *bufio.Scanner, prompt string) (float64, error) {
 	return strconv.ParseFloat(text, 64)
 }
 
+// Returns an input as a []string, seperated by a \n character
 func MultiLineString(scanner *bufio.Scanner, prompt string) ([]string, error) {
 	fmt.Print(prompt)
 	var lines []string
@@ -53,6 +57,7 @@ func MultiLineString(scanner *bufio.Scanner, prompt string) ([]string, error) {
 	return lines, nil
 }
 
+// Returns an input as a bool
 func Bool(scanner *bufio.Scanner, prompt string) (bool, error) {
 	fmt.Printf("%s (y/n)", prompt)
 	if !scanner.Scan() {
@@ -69,6 +74,7 @@ func Bool(scanner *bufio.Scanner, prompt string) (bool, error) {
 	}
 }
 
+// Returns an input as a choice from a given list
 func Choice(scanner *bufio.Scanner, prompt string, valid []string) (string, error) {
 	fmt.Printf("%s (%s): ", prompt, strings.Join(valid, "/"))
 	if !scanner.Scan() {
@@ -96,7 +102,7 @@ func Match(scanner *bufio.Scanner, prompt string, pattern string) (string, error
 }
 
 func IntRange(scanner *bufio.Scanner, prompt string, min int, max int) (int, error) {
-	prompt = fmt.Sprintf("%s,(%d-%d)", prompt, min, max)
+	prompt = fmt.Sprintf("%s - (%d-%d): ", prompt, min, max)
 	n, err := Int(scanner, prompt)
 	if err != nil {
 		return 0, err

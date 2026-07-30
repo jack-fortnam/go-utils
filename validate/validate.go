@@ -2,15 +2,18 @@ package validate
 
 import (
 	"errors"
+	"fmt"
 	"net/mail"
 	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var phoneRegex = regexp.MustCompile(`^\+[1-9]\d{7,14}$`)
 var PostCodeReg = regexp.MustCompile(`^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$`)
+var UKCarReg = regexp.MustCompile(`^[A-Z]{2}\d{2}\s[A-Z]{3}$`)
 
 func Email(email string) error {
 	_, err := mail.ParseAddress(email)
@@ -70,6 +73,34 @@ func Url(URL string) error {
 	u, err := url.ParseRequestURI(URL)
 	if err != nil || u.Scheme == "" || u.Host == "" {
 		return errors.New("invalid URL")
+	}
+	return nil
+}
+
+func Car(plate string) error {
+	if !UKCarReg.MatchString(plate) {
+		return errors.New("invalid plate")
+	}
+	return nil
+}
+
+func Date(dateStr string) bool {
+	const layout = "2006-01-02"
+
+	t, err := time.Parse(layout, dateStr)
+	if err != nil {
+		return false
+	}
+
+	return t.Format(layout) == dateStr
+}
+
+func IsInteger(s string) error {
+	if s == "" {
+		return fmt.Errorf("required")
+	}
+	if _, err := strconv.Atoi(s); err != nil {
+		return fmt.Errorf("must be a valid integer")
 	}
 	return nil
 }
