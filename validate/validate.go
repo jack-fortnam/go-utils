@@ -3,7 +3,6 @@ package validate
 import (
 	"errors"
 	"fmt"
-	"net/mail"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -14,10 +13,13 @@ import (
 var phoneRegex = regexp.MustCompile(`^\+[1-9]\d{7,14}$`)
 var PostCodeReg = regexp.MustCompile(`^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$`)
 var UKCarReg = regexp.MustCompile(`^[A-Z]{2}\d{2}\s[A-Z]{3}$`)
+var emailReg = regexp.MustCompile(`(?i)^[a-z0-9_%+\-]+(?:\.[a-z0-9_%+\-]+)*@[a-z0-9.\-]+\.[a-z]{2,}$`)
 
 func Email(email string) error {
-	_, err := mail.ParseAddress(email)
-	return err
+	if !emailReg.MatchString(email) {
+		return errors.New("invalid email")
+	}
+	return nil
 }
 
 func PhoneNumber(phone string) error {
@@ -28,13 +30,13 @@ func PhoneNumber(phone string) error {
 }
 
 func PostCode(code string) error {
-	if !PostCodeReg.MatchString(NormalizePostcode(code)) {
+	if !PostCodeReg.MatchString(normalizePostcode(code)) {
 		return errors.New("invalid postcode")
 	}
 	return nil
 }
 
-func NormalizePostcode(pc string) string {
+func normalizePostcode(pc string) string {
 	return strings.ToUpper(strings.ReplaceAll(pc, " ", ""))
 }
 

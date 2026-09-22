@@ -15,6 +15,7 @@ func TestEmail(t *testing.T) {
 		{"missing at", "testexample.com", false},
 		{"missing domain", "test@", false},
 		{"double dot", "test..name@example.com", false},
+		{"missing tld", "test@example", false},
 		{"empty", "", false},
 	}
 	for _, tt := range tests {
