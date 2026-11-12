@@ -70,7 +70,7 @@ func Bool(scanner *bufio.Scanner, prompt string) (bool, error) {
 	case "n":
 		return false, nil
 	default:
-		return false, errors.New("Invalid input")
+		return false, errors.New("invalid input")
 	}
 }
 
@@ -110,5 +110,5 @@ func IntRange(scanner *bufio.Scanner, prompt string, min int, max int) (int, err
 	if (min < n) && (n < max) {
 		return n, nil
 	}
-	return 0, errors.New("Integer not in range")
+	return 0, errors.New("integer not in range")
 }

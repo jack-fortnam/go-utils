@@ -50,3 +50,9 @@ func MustIntRange(scanner *bufio.Scanner, prompt string, min int, max int) int {
 		return IntRange(scanner, prompt, min, max)
 	})
 }
+
+func MustBool(scanner *bufio.Scanner, prompt string) bool {
+	return retry(func() (bool, error) {
+		return Bool(scanner, prompt)
+	})
+}
