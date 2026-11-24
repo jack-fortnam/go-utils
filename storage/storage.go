@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+var Address Storage
+
 type Storage struct {
 	appName  string
 	Config   string
